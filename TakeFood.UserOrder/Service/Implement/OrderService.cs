@@ -74,7 +74,7 @@ public class OrderService : IOrderService
         order.Sate = "Ordered";
         order.Mode = "1";
         order.PhoneNumber = dto.PhongeNumber;
-        order.Note = dto.Note;
+        order.Note = dto.Note != null ? dto.Note : "không có lời nhắn";
         order.StoreId = dto.StoreId;
         order.ReceiveTime = DateTime.MinValue;
         var foodsStoreId = foodRepository.FindAsync(x => x.StoreId == order.StoreId).Result.Select(x => x.Id);
@@ -112,7 +112,8 @@ public class OrderService : IOrderService
                 }
             }
         }
-        var voucher = await voucherRepository.FindByIdAsync(dto.VoucherId);
+
+        var voucher = dto.VoucherId != null ? await voucherRepository.FindByIdAsync(dto.VoucherId) : null;
         if (voucher != null && money >= voucher.MinSpend && voucher.StartDay <= DateTime.UtcNow && voucher.ExpireDay <= DateTime.UtcNow)
         {
             var discount = money * (voucher.Amount / 100);
