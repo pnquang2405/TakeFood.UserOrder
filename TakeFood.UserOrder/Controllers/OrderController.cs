@@ -29,10 +29,10 @@ public class OrderController : BaseController
     {
         try
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.ErrorCount);
-            }
+            }*/
             await OrderService.CreateOrderAsync(dto, GetId());
             return Ok();
         }
